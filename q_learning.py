@@ -45,7 +45,7 @@ class QLearningAgent:
         else:
             qs = self.qnet(state_vec)
             return qs.data.argmax()
-    
+
     def update(self, state, action, reward, next_state, done):
         if done:
             next_q = np.zeros(1)
@@ -53,7 +53,7 @@ class QLearningAgent:
             next_qs = self.qnet(next_state)
             next_q = next_qs.max(axis=1)
             next_q._detach()
-        
+
         target = self.gamma * next_q + reward
         qs = self.qnet(state)
         q = qs[:, action]
@@ -91,7 +91,8 @@ if __name__ == "__main__":
 
         average_loss = total_loss / cnt
         loss_history.append(average_loss)
-
+        if episode % 100 == 0:
+            print(f"average_loss: {average_loss: .20f}")
 
     plt.xlabel('episode')
     plt.ylabel('loss')
